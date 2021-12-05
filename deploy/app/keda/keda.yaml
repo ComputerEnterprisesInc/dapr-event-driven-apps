@@ -1,0 +1,47 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: detection-scaledobject
+  namespace: default
+  labels:
+    deploymentName: detection
+spec:
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 5  # Optional. Default: 30 seconds
+  cooldownPeriod:  5 # Optional. Default: 300 seconds
+  scaleTargetRef:
+    name: detection
+  triggers:
+  - type: redis-streams
+    metadata:
+      host: redis-master.default.svc.cluster.local
+      port: "6379"
+      password: ""
+      stream: detect
+      consumerGroup: detection
+      pendingEntriesCount: "1"   
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: recognition-scaledobject
+  namespace: default
+  labels:
+    deploymentName: recognition
+spec:
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 5  # Optional. Default: 30 seconds
+  cooldownPeriod:  5 # Optional. Default: 300 seconds
+  scaleTargetRef:
+    name: recognition
+  triggers:
+  - type: redis-streams
+    metadata:
+      host: redis-master.default.svc.cluster.local
+      port: "6379"
+      password: ""
+      stream: recognize
+      consumerGroup: recognition      
+      pendingEntriesCount: "1"

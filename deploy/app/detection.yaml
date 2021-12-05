@@ -1,0 +1,50 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  detection
+  namespace: default
+  labels:
+    app:  detection
+    project: demo
+spec:
+  selector:
+    matchLabels:
+      app: detection
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  detection
+        project: demo        
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "detection"
+        dapr.io/app-port: "5000"          
+    spec:
+      containers:
+      - name:  detection
+        image:  detection:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort:  3000
+          name:  detection        
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: detection-service
+  namespace: default
+spec:
+  selector:
+    app: detection-service
+  type: ClusterIP
+  ports:
+  - name: detection-service
+    protocol: TCP
+    port: 80
+    targetPort: 5000
+---

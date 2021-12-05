@@ -1,0 +1,50 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  http-api
+  namespace: default
+  labels:
+    app:  http-api
+    project: demo      
+spec:
+  selector:
+    matchLabels:
+      app: http-api
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  http-api
+        project: demo  
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "http-api"
+        dapr.io/app-port: "5000"          
+    spec:
+      containers:
+      - name:  http-api
+        image:  http-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort:  3000
+          name:  http-api
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-api-service
+  namespace: default
+spec:
+  selector:
+    app: http-api
+  type: ClusterIP
+  ports:
+  - name: http-api-service
+    protocol: TCP
+    port: 80
+    targetPort: 5000
+---

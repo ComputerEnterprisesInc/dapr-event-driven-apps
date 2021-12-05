@@ -1,0 +1,50 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  recognition
+  namespace: default
+  labels:
+    app:  recognition
+    project: demo   
+spec:
+  selector:
+    matchLabels:
+      app: recognition
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  recognition
+        project: demo          
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "recognition"
+        dapr.io/app-port: "5000"          
+    spec:
+      containers:
+      - name:  recognition
+        image:  recognition:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort:  3000
+          name: recognition       
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recognition-service
+  namespace: default
+spec:
+  selector:
+    app: recognition-service
+  type: ClusterIP
+  ports:
+  - name: recognition-service
+    protocol: TCP
+    port: 80
+    targetPort: 5000
+---
