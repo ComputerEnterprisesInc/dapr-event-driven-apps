@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import json
 import logging
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
@@ -8,13 +9,6 @@ app = Flask(__name__)
 def recognize():
     app.logger.info('recognizing default')
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
-
-@app.route('/dapr/subscribe', methods=['GET'])
-def subscribe():
-    subscriptions = [{'pubsubname': 'pubsub',
-                      'topic': 'recognize',
-                      'route': '/recognize'}]
-    return jsonify(subscriptions)
 
 @app.route('/')
 def hello():

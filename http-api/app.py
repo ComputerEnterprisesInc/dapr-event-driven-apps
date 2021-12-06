@@ -3,6 +3,7 @@ import json
 import requests
 import os
 import logging
+logging.basicConfig(level=logging.INFO)
 
 # from dapr import DaprClient
 # daprClient = DaprClient()

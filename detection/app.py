@@ -3,6 +3,7 @@ import requests
 import json
 import os
 import logging
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 daprPort = os.environ.get('DAPR_HTTP_PORT',  3500)

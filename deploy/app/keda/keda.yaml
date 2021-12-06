@@ -8,8 +8,8 @@ metadata:
 spec:
   minReplicaCount: 1
   maxReplicaCount: 10
-  pollingInterval: 5  # Optional. Default: 30 seconds
-  cooldownPeriod:  5 # Optional. Default: 300 seconds
+  pollingInterval: 1  # Optional. Default: 30 seconds
+  cooldownPeriod:  10 # Optional. Default: 300 seconds
   scaleTargetRef:
     name: detection
   triggers:
@@ -20,7 +20,7 @@ spec:
       password: ""
       stream: detect
       consumerGroup: detection
-      pendingEntriesCount: "1"   
+      pendingEntriesCount: "2"   
 ---
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -32,8 +32,8 @@ metadata:
 spec:
   minReplicaCount: 1
   maxReplicaCount: 10
-  pollingInterval: 5  # Optional. Default: 30 seconds
-  cooldownPeriod:  5 # Optional. Default: 300 seconds
+  pollingInterval: 1  # Optional. Default: 30 seconds
+  cooldownPeriod:  10 # Optional. Default: 300 seconds
   scaleTargetRef:
     name: recognition
   triggers:
@@ -44,4 +44,4 @@ spec:
       password: ""
       stream: recognize
       consumerGroup: recognition      
-      pendingEntriesCount: "1"
+      pendingEntriesCount: "2"

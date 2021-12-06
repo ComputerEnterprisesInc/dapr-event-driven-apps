@@ -7,13 +7,32 @@ resources:
   - ingress.yaml
   - dapr.yaml
   
+# images:
+#   - name: detection
+#     newTag: local
+#   - name: recognition
+#     newTag: local
+#   - name: http-api
+#     newTag: local
+
+# patches:
+#   - target:
+#       kind: Deployment
+#     patch: |-
+#       - op: add
+#         path: "/spec/template/spec/containers/0/imagePullPolicy"
+#         value: Never
+
 images:
   - name: detection
-    newTag: local
+    newName: daprtalk.azurecr.io/detection
+    newTag: f1849fef809947a1eb3e275b43678d1030d66a43
   - name: recognition
-    newTag: local
+    newName: daprtalk.azurecr.io/recognition
+    newTag: f1849fef809947a1eb3e275b43678d1030d66a43
   - name: http-api
-    newTag: local
+    newName: daprtalk.azurecr.io/http-api
+    newTag: f1849fef809947a1eb3e275b43678d1030d66a43
 
 patches:
   - target:
@@ -21,4 +40,4 @@ patches:
     patch: |-
       - op: add
         path: "/spec/template/spec/containers/0/imagePullPolicy"
-        value: Never
+        value: IfNotPresent
