@@ -94,3 +94,6 @@
     keda-hpa-detection-scaledobject     Deployment/detection     0/2 (avg)   1         10        1          47m
     keda-hpa-recognition-scaledobject   Deployment/recognition   0/2 (avg)   1         10        1          47m
     ```
+## References
+* [Dapr](https://dapr.io/)
+* [KEDA](https://keda.sh)
